@@ -70,19 +70,15 @@ async def backup_job(context):
 
 # ───────────────────────── ساخت پست‌ها ─────────────────────────
 def build_proxy_post(rows, bot_username):
-    text = templates.proxy_post(len(rows), bot_username)
-    buttons = [
-        btn(templates.proxy_button_label(i), url=r["link"], style=BLUE)
-        for i, r in enumerate(rows, 1)
-    ]
-    grid = [buttons[i : i + 2] for i in range(0, len(buttons), 2)]
-    grid.append(
+    # پروکسی‌ها لینک متنی (آبی) داخل خود پیام هستند؛ فقط دکمه‌های ربات و آموزش زیر پست می‌مانند
+    text = templates.proxy_post(rows, bot_username)
+    markup = kb(
         [
             btn("🤖 ربات کینگ پروکسی", url=f"https://t.me/{bot_username}", style=GREEN),
             btn("📲 آموزش و دانلود", url=f"https://t.me/{bot_username}?start=apps", style=BLUE),
         ]
     )
-    return text, kb(*grid)
+    return text, markup
 
 
 def build_config_post(rows, bot_username):
